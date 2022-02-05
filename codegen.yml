@@ -1,13 +1,13 @@
 overwrite: true
 schema: './schema/schema.graphql'
-documents: './src/@graphql/{queries,mutations}/**/*.graphql'
+documents: './@graphql/{queries,mutations}/**/*.graphql'
 generates:
-  src/generated/graphql-request.ts:
+  generated/graphql-request.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-graphql-request'
-  src/generated/react-query.ts:
+  generated/react-query.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'
