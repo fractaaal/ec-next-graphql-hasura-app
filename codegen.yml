@@ -1,0 +1,16 @@
+overwrite: true
+schema: './schema/schema.graphql'
+documents: './src/@graphql/{queries,mutations}/**/*.graphql'
+generates:
+  src/generated/graphql-request.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-graphql-request'
+  src/generated/react-query.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-query'
+    config:
+      fetcher: 'graphql-request'
