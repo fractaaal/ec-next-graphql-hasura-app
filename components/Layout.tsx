@@ -9,31 +9,22 @@ export const Layout: React.FC = ({ children }) => {
         <title>EC Smaple App</title>
       </Head>
       <header>
-        <nav className="bg-gray-800 w-screen">
+        <nav className="bg-indigo-300 w-screen">
           <div className="flex items-center pl-8 h-14">
             <div className="flex space-x-4">
               <Link href="/">
-                <a
-                  data-testid="home-nav"
-                  className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded"
-                >
+                <a className="text-indigo-900 hover:bg-indigo-500 px-3 py-2 rounded">
                   Home
                 </a>
               </Link>
-              <Link href="/local-state-a">
-                <a
-                  data-testid="makevar-nav"
-                  className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded"
-                >
-                  makeVar
+              <Link href="/">
+                <a className="text-indigo-900 hover:bg-indigo-500 px-3 py-2 rounded">
+                  Items
                 </a>
               </Link>
-              <Link href="/hasura-main">
-                <a
-                  data-testid="fetchpolicy-nav"
-                  className="text-gray-300 hover:bg-gray-700 px-3 py-2 rounded"
-                >
-                  fetchPolicy(Hasura)
+              <Link href="/">
+                <a className="text-indigo-900 hover:bg-indigo-500 px-3 py-2 rounded">
+                  Shops
                 </a>
               </Link>
             </div>
