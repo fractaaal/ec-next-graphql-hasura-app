@@ -1,0 +1,15 @@
+query allItems {
+  items {
+    id
+    image_url
+    detail
+    created_at
+    category
+    name
+    price
+    shop {
+      id
+      name
+    }
+  }
+}

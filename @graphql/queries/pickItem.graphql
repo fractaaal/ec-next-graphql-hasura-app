@@ -1,0 +1,15 @@
+query pickItem($itemId: uuid!) {
+  items_by_pk(id: $itemId) {
+    id
+    image_url
+    detail
+    created_at
+    category
+    name
+    price
+    shop {
+      id
+      name
+    }
+  }
+}

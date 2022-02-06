@@ -14,6 +14,21 @@ directive @cached(
 ) on QUERY
 
 """
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
 input String_comparison_exp {
@@ -70,9 +85,13 @@ input String_comparison_exp {
 columns and relationships of "items"
 """
 type items {
+  category: Int
   created_at: timestamptz!
+  detail: String
   id: uuid!
+  image_url: String
   name: String!
+  price: Int
 
   """An object relationship"""
   shop: shops
@@ -92,18 +111,34 @@ type items_aggregate {
 aggregate fields of "items"
 """
 type items_aggregate_fields {
+  avg: items_avg_fields
   count(columns: [items_select_column!], distinct: Boolean): Int!
   max: items_max_fields
   min: items_min_fields
+  stddev: items_stddev_fields
+  stddev_pop: items_stddev_pop_fields
+  stddev_samp: items_stddev_samp_fields
+  sum: items_sum_fields
+  var_pop: items_var_pop_fields
+  var_samp: items_var_samp_fields
+  variance: items_variance_fields
 }
 
 """
 order by aggregate values of table "items"
 """
 input items_aggregate_order_by {
+  avg: items_avg_order_by
   count: order_by
   max: items_max_order_by
   min: items_min_order_by
+  stddev: items_stddev_order_by
+  stddev_pop: items_stddev_pop_order_by
+  stddev_samp: items_stddev_samp_order_by
+  sum: items_sum_order_by
+  var_pop: items_var_pop_order_by
+  var_samp: items_var_samp_order_by
+  variance: items_variance_order_by
 }
 
 """
@@ -116,6 +151,20 @@ input items_arr_rel_insert_input {
   on_conflict: items_on_conflict
 }
 
+"""aggregate avg on columns"""
+type items_avg_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by avg() on columns of table "items"
+"""
+input items_avg_order_by {
+  category: order_by
+  price: order_by
+}
+
 """
 Boolean expression to filter rows from the table "items". All fields are combined with a logical 'AND'.
 """
@@ -123,9 +172,13 @@ input items_bool_exp {
   _and: [items_bool_exp!]
   _not: items_bool_exp
   _or: [items_bool_exp!]
+  category: Int_comparison_exp
   created_at: timestamptz_comparison_exp
+  detail: String_comparison_exp
   id: uuid_comparison_exp
+  image_url: String_comparison_exp
   name: String_comparison_exp
+  price: Int_comparison_exp
   shop: shops_bool_exp
   shop_id: uuid_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -140,12 +193,24 @@ enum items_constraint {
 }
 
 """
+input type for incrementing numeric columns in table "items"
+"""
+input items_inc_input {
+  category: Int
+  price: Int
+}
+
+"""
 input type for inserting data into table "items"
 """
 input items_insert_input {
+  category: Int
   created_at: timestamptz
+  detail: String
   id: uuid
+  image_url: String
   name: String
+  price: Int
   shop: shops_obj_rel_insert_input
   shop_id: uuid
   updated_at: timestamptz
@@ -153,9 +218,13 @@ input items_insert_input {
 
 """aggregate max on columns"""
 type items_max_fields {
+  category: Int
   created_at: timestamptz
+  detail: String
   id: uuid
+  image_url: String
   name: String
+  price: Int
   shop_id: uuid
   updated_at: timestamptz
 }
@@ -164,18 +233,26 @@ type items_max_fields {
 order by max() on columns of table "items"
 """
 input items_max_order_by {
+  category: order_by
   created_at: order_by
+  detail: order_by
   id: order_by
+  image_url: order_by
   name: order_by
+  price: order_by
   shop_id: order_by
   updated_at: order_by
 }
 
 """aggregate min on columns"""
 type items_min_fields {
+  category: Int
   created_at: timestamptz
+  detail: String
   id: uuid
+  image_url: String
   name: String
+  price: Int
   shop_id: uuid
   updated_at: timestamptz
 }
@@ -184,9 +261,13 @@ type items_min_fields {
 order by min() on columns of table "items"
 """
 input items_min_order_by {
+  category: order_by
   created_at: order_by
+  detail: order_by
   id: order_by
+  image_url: order_by
   name: order_by
+  price: order_by
   shop_id: order_by
   updated_at: order_by
 }
@@ -213,9 +294,13 @@ input items_on_conflict {
 
 """Ordering options when selecting data from "items"."""
 input items_order_by {
+  category: order_by
   created_at: order_by
+  detail: order_by
   id: order_by
+  image_url: order_by
   name: order_by
+  price: order_by
   shop: shops_order_by
   shop_id: order_by
   updated_at: order_by
@@ -231,13 +316,25 @@ select columns of table "items"
 """
 enum items_select_column {
   """column name"""
+  category
+
+  """column name"""
   created_at
+
+  """column name"""
+  detail
 
   """column name"""
   id
 
   """column name"""
+  image_url
+
+  """column name"""
   name
+
+  """column name"""
+  price
 
   """column name"""
   shop_id
@@ -250,11 +347,71 @@ enum items_select_column {
 input type for updating data in table "items"
 """
 input items_set_input {
+  category: Int
   created_at: timestamptz
+  detail: String
   id: uuid
+  image_url: String
   name: String
+  price: Int
   shop_id: uuid
   updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type items_stddev_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by stddev() on columns of table "items"
+"""
+input items_stddev_order_by {
+  category: order_by
+  price: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type items_stddev_pop_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by stddev_pop() on columns of table "items"
+"""
+input items_stddev_pop_order_by {
+  category: order_by
+  price: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type items_stddev_samp_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by stddev_samp() on columns of table "items"
+"""
+input items_stddev_samp_order_by {
+  category: order_by
+  price: order_by
+}
+
+"""aggregate sum on columns"""
+type items_sum_fields {
+  category: Int
+  price: Int
+}
+
+"""
+order by sum() on columns of table "items"
+"""
+input items_sum_order_by {
+  category: order_by
+  price: order_by
 }
 
 """
@@ -262,19 +419,73 @@ update columns of table "items"
 """
 enum items_update_column {
   """column name"""
+  category
+
+  """column name"""
   created_at
+
+  """column name"""
+  detail
 
   """column name"""
   id
 
   """column name"""
+  image_url
+
+  """column name"""
   name
+
+  """column name"""
+  price
 
   """column name"""
   shop_id
 
   """column name"""
   updated_at
+}
+
+"""aggregate var_pop on columns"""
+type items_var_pop_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by var_pop() on columns of table "items"
+"""
+input items_var_pop_order_by {
+  category: order_by
+  price: order_by
+}
+
+"""aggregate var_samp on columns"""
+type items_var_samp_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by var_samp() on columns of table "items"
+"""
+input items_var_samp_order_by {
+  category: order_by
+  price: order_by
+}
+
+"""aggregate variance on columns"""
+type items_variance_fields {
+  category: Float
+  price: Float
+}
+
+"""
+order by variance() on columns of table "items"
+"""
+input items_variance_order_by {
+  category: order_by
+  price: order_by
 }
 
 """mutation root"""
@@ -353,6 +564,9 @@ type mutation_root {
   update data of the table: "items"
   """
   update_items(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: items_inc_input
+
     """sets the columns of the filtered rows to the given values"""
     _set: items_set_input
 
@@ -364,6 +578,9 @@ type mutation_root {
   update single row of the table: "items"
   """
   update_items_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: items_inc_input
+
     """sets the columns of the filtered rows to the given values"""
     _set: items_set_input
     pk_columns: items_pk_columns_input!
