@@ -879,6 +879,13 @@ export type AllItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllItemsQuery = { __typename?: 'query_root', items: Array<{ __typename?: 'items', id: any, image_url?: string | null, detail?: string | null, created_at: any, category?: number | null, name: string, price?: number | null, shop_id?: any | null }> };
 
+export type PickItemQueryVariables = Exact<{
+  itemId: Scalars['uuid'];
+}>;
+
+
+export type PickItemQuery = { __typename?: 'query_root', items_by_pk?: { __typename?: 'items', id: any, image_url?: string | null, detail?: string | null, created_at: any, category?: number | null, name: string, price?: number | null, shop?: { __typename?: 'shops', id: any, name: string } | null } | null };
+
 
 export const AllItemsDocument = `
     query allItems {
@@ -906,5 +913,36 @@ export const useAllItemsQuery = <
     useQuery<AllItemsQuery, TError, TData>(
       variables === undefined ? ['allItems'] : ['allItems', variables],
       fetcher<AllItemsQuery, AllItemsQueryVariables>(client, AllItemsDocument, variables, headers),
+      options
+    );
+export const PickItemDocument = `
+    query pickItem($itemId: uuid!) {
+  items_by_pk(id: $itemId) {
+    id
+    image_url
+    detail
+    created_at
+    category
+    name
+    price
+    shop {
+      id
+      name
+    }
+  }
+}
+    `;
+export const usePickItemQuery = <
+      TData = PickItemQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: PickItemQueryVariables,
+      options?: UseQueryOptions<PickItemQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<PickItemQuery, TError, TData>(
+      ['pickItem', variables],
+      fetcher<PickItemQuery, PickItemQueryVariables>(client, PickItemDocument, variables, headers),
       options
     );

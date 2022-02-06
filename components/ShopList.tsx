@@ -3,6 +3,7 @@ import { Card } from './Card'
 
 export type ShopListProps = {
   items: Array<{
+    id: string
     name: string
     category: number
     detail: string
@@ -13,7 +14,7 @@ export type ShopListProps = {
 
 export const ShopList: React.FC<ShopListProps> = ({ items }) => {
   return (
-    <div className="flex columns-3">
+    <div className="grid grid-cols-3">
       {items.map((item, index) => {
         return <Card key={index} item={item} />
       })}

@@ -875,6 +875,13 @@ export type AllItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllItemsQuery = { __typename?: 'query_root', items: Array<{ __typename?: 'items', id: any, image_url?: string | null, detail?: string | null, created_at: any, category?: number | null, name: string, price?: number | null, shop_id?: any | null }> };
 
+export type PickItemQueryVariables = Exact<{
+  itemId: Scalars['uuid'];
+}>;
+
+
+export type PickItemQuery = { __typename?: 'query_root', items_by_pk?: { __typename?: 'items', id: any, image_url?: string | null, detail?: string | null, created_at: any, category?: number | null, name: string, price?: number | null, shop?: { __typename?: 'shops', id: any, name: string } | null } | null };
+
 
 export const AllItemsDocument = gql`
     query allItems {
@@ -890,6 +897,23 @@ export const AllItemsDocument = gql`
   }
 }
     `;
+export const PickItemDocument = gql`
+    query pickItem($itemId: uuid!) {
+  items_by_pk(id: $itemId) {
+    id
+    image_url
+    detail
+    created_at
+    category
+    name
+    price
+    shop {
+      id
+      name
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -900,6 +924,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     allItems(variables?: AllItemsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllItemsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllItemsQuery>(AllItemsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allItems');
+    },
+    pickItem(variables: PickItemQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PickItemQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PickItemQuery>(PickItemDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'pickItem');
     }
   };
 }

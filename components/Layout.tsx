@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import Image from 'next/image'
 
 export const Layout: React.FC = ({ children }) => {
   return (
@@ -27,6 +28,18 @@ export const Layout: React.FC = ({ children }) => {
                   Shops
                 </a>
               </Link>
+              <span className="relative inline-block mr-0">
+                <Image
+                  className="w-full"
+                  width={30}
+                  height={30}
+                  src="/images/cart_icon.png"
+                  alt="Sunset in the mountains"
+                />
+                <div className="absolute bottom-px right-0 rounded-full h-5 w-5 flex items-center justify-center bg-red-500">
+                  <span className="font-semibold text-xs text-white">1</span>
+                </div>
+              </span>
             </div>
           </div>
         </nav>
