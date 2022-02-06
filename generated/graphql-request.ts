@@ -873,7 +873,7 @@ export type Uuid_Comparison_Exp = {
 export type AllItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllItemsQuery = { __typename?: 'query_root', items: Array<{ __typename?: 'items', id: any, image_url?: string | null, detail?: string | null, created_at: any, category?: number | null, name: string, price?: number | null, shop_id?: any | null }> };
+export type AllItemsQuery = { __typename?: 'query_root', items: Array<{ __typename?: 'items', id: any, image_url?: string | null, detail?: string | null, created_at: any, category?: number | null, name: string, price?: number | null, shop?: { __typename?: 'shops', id: any, name: string } | null }> };
 
 export type PickItemQueryVariables = Exact<{
   itemId: Scalars['uuid'];
@@ -893,7 +893,10 @@ export const AllItemsDocument = gql`
     category
     name
     price
-    shop_id
+    shop {
+      id
+      name
+    }
   }
 }
     `;

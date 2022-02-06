@@ -1,9 +1,7 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useEffect } from 'react'
+import { useCartItemState } from '../modules/recoil-state/useCartItemState'
 import { GetServerSideProps } from 'next'
 import ShopList from '../components/ShopList'
-import { ShopListProps } from '../components/ShopList'
 import { sdk } from '../modules/graphql-client/client'
 import { Layout } from '../components/Layout'
 

@@ -9,10 +9,15 @@ export type ShopListProps = {
     detail: string
     price: number
     image_url: string
+    shop: {
+      id: string
+      name: string
+    }
   }>
 }
 
 export const ShopList: React.FC<ShopListProps> = ({ items }) => {
+  console.log('rendering')
   return (
     <div className="grid grid-cols-3">
       {items.map((item, index) => {

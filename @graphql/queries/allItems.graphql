@@ -7,6 +7,9 @@ query allItems {
     category
     name
     price
-    shop_id
+    shop {
+      id
+      name
+    }
   }
 }

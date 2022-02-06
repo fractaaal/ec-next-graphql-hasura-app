@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { categories } from '../modules/data/categories'
+import { useCartItemState } from '../modules/recoil-state/useCartItemState'
 
 export type CardProps = {
   item: {
@@ -11,10 +12,28 @@ export type CardProps = {
     detail: string
     price: number
     image_url: string
+    shop: {
+      id: string
+      name: string
+    }
   }
 }
 
 export const Card: React.FC<CardProps> = ({ item }) => {
+  const { cartItem, addItem, removeItem } = useCartItemState()
+  const itemId = item.id
+
+  const check = () => {
+    const appState = localStorage.getItem('cartItems')
+    console.log(JSON.parse(appState))
+    const ids = cartItem.map((item) => {
+      return item.id
+    })
+    const flag = ids.includes(itemId)
+    return flag ? removeItem(item) : addItem(item)
+  }
+  console.log(cartItem)
+
   return (
     <div className="max-w-xs w-72 rounded overflow-hidden shadow-lg mx-2 my-2">
       <Link href={`/detail/${item.id}`}>
@@ -38,7 +57,10 @@ export const Card: React.FC<CardProps> = ({ item }) => {
             #{categories[item.category]}
           </li>
           <li className="">
-            <button className="inline-flex items-center px-3 py-1 bg-gray-800 hover:bg-gray-500 text-white font-bold rounded">
+            <button
+              className="inline-flex items-center px-3 py-1 bg-gray-800 hover:bg-gray-500 text-white font-bold rounded"
+              onClick={() => check()}
+            >
               <span className="inline-block mr-0">
                 <Image
                   className="w-full"

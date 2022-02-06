@@ -2,8 +2,11 @@ import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useCartItemState } from '../modules/recoil-state/useCartItemState'
 
 export const Layout: React.FC = ({ children }) => {
+  const { cartItem, addItem, removeItem } = useCartItemState()
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen text-gray-600 text-sm font-mono">
       <Head>
@@ -36,9 +39,15 @@ export const Layout: React.FC = ({ children }) => {
                   src="/images/cart_icon.png"
                   alt="Sunset in the mountains"
                 />
-                <div className="absolute bottom-px right-0 rounded-full h-5 w-5 flex items-center justify-center bg-red-500">
-                  <span className="font-semibold text-xs text-white">1</span>
-                </div>
+                {cartItem.length !== 0 ? (
+                  <div className="absolute bottom-px right-0 rounded-full h-5 w-5 flex items-center justify-center bg-red-500">
+                    <span className="font-semibold text-xs text-white">
+                      {cartItem.length}
+                    </span>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </span>
             </div>
           </div>
