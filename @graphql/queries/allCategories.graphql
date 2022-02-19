@@ -1,0 +1,7 @@
+query allCategories {
+  categories {
+    id
+    name
+    index
+  }
+}

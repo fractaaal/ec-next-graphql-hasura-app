@@ -1,5 +1,5 @@
-query allItems {
-  items {
+query pagenationAllItems($offset: Int!, $limit: Int!) {
+  items(offset: $offset, limit: $limit) {
     id
     image_url
     detail

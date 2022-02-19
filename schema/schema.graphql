@@ -82,6 +82,490 @@ input String_comparison_exp {
 }
 
 """
+columns and relationships of "categories"
+"""
+type categories {
+  created_at: timestamptz!
+  id: uuid!
+  index: Int!
+
+  """An array relationship"""
+  item_categories(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): [item_categories!]!
+
+  """An aggregate relationship"""
+  item_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): item_categories_aggregate!
+  name: String!
+  updated_at: timestamptz
+}
+
+"""
+aggregated selection of "categories"
+"""
+type categories_aggregate {
+  aggregate: categories_aggregate_fields
+  nodes: [categories!]!
+}
+
+"""
+aggregate fields of "categories"
+"""
+type categories_aggregate_fields {
+  avg: categories_avg_fields
+  count(columns: [categories_select_column!], distinct: Boolean): Int!
+  max: categories_max_fields
+  min: categories_min_fields
+  stddev: categories_stddev_fields
+  stddev_pop: categories_stddev_pop_fields
+  stddev_samp: categories_stddev_samp_fields
+  sum: categories_sum_fields
+  var_pop: categories_var_pop_fields
+  var_samp: categories_var_samp_fields
+  variance: categories_variance_fields
+}
+
+"""aggregate avg on columns"""
+type categories_avg_fields {
+  index: Float
+}
+
+"""
+Boolean expression to filter rows from the table "categories". All fields are combined with a logical 'AND'.
+"""
+input categories_bool_exp {
+  _and: [categories_bool_exp!]
+  _not: categories_bool_exp
+  _or: [categories_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  index: Int_comparison_exp
+  item_categories: item_categories_bool_exp
+  name: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "categories"
+"""
+enum categories_constraint {
+  """unique or primary key constraint"""
+  categories_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "categories"
+"""
+input categories_inc_input {
+  index: Int
+}
+
+"""
+input type for inserting data into table "categories"
+"""
+input categories_insert_input {
+  created_at: timestamptz
+  id: uuid
+  index: Int
+  item_categories: item_categories_arr_rel_insert_input
+  name: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type categories_max_fields {
+  created_at: timestamptz
+  id: uuid
+  index: Int
+  name: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type categories_min_fields {
+  created_at: timestamptz
+  id: uuid
+  index: Int
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "categories"
+"""
+type categories_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [categories!]!
+}
+
+"""
+input type for inserting object relation for remote table "categories"
+"""
+input categories_obj_rel_insert_input {
+  data: categories_insert_input!
+
+  """on conflict condition"""
+  on_conflict: categories_on_conflict
+}
+
+"""
+on conflict condition type for table "categories"
+"""
+input categories_on_conflict {
+  constraint: categories_constraint!
+  update_columns: [categories_update_column!]! = []
+  where: categories_bool_exp
+}
+
+"""Ordering options when selecting data from "categories"."""
+input categories_order_by {
+  created_at: order_by
+  id: order_by
+  index: order_by
+  item_categories_aggregate: item_categories_aggregate_order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: categories"""
+input categories_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "categories"
+"""
+enum categories_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  index
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "categories"
+"""
+input categories_set_input {
+  created_at: timestamptz
+  id: uuid
+  index: Int
+  name: String
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type categories_stddev_fields {
+  index: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type categories_stddev_pop_fields {
+  index: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type categories_stddev_samp_fields {
+  index: Float
+}
+
+"""aggregate sum on columns"""
+type categories_sum_fields {
+  index: Int
+}
+
+"""
+update columns of table "categories"
+"""
+enum categories_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  index
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""aggregate var_pop on columns"""
+type categories_var_pop_fields {
+  index: Float
+}
+
+"""aggregate var_samp on columns"""
+type categories_var_samp_fields {
+  index: Float
+}
+
+"""aggregate variance on columns"""
+type categories_variance_fields {
+  index: Float
+}
+
+"""
+columns and relationships of "item_categories"
+"""
+type item_categories {
+  """An object relationship"""
+  category: categories!
+  category_id: uuid!
+  created_at: timestamptz!
+  id: uuid!
+
+  """An object relationship"""
+  item: items!
+  item_id: uuid!
+  updated_at: timestamptz
+}
+
+"""
+aggregated selection of "item_categories"
+"""
+type item_categories_aggregate {
+  aggregate: item_categories_aggregate_fields
+  nodes: [item_categories!]!
+}
+
+"""
+aggregate fields of "item_categories"
+"""
+type item_categories_aggregate_fields {
+  count(columns: [item_categories_select_column!], distinct: Boolean): Int!
+  max: item_categories_max_fields
+  min: item_categories_min_fields
+}
+
+"""
+order by aggregate values of table "item_categories"
+"""
+input item_categories_aggregate_order_by {
+  count: order_by
+  max: item_categories_max_order_by
+  min: item_categories_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "item_categories"
+"""
+input item_categories_arr_rel_insert_input {
+  data: [item_categories_insert_input!]!
+
+  """on conflict condition"""
+  on_conflict: item_categories_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "item_categories". All fields are combined with a logical 'AND'.
+"""
+input item_categories_bool_exp {
+  _and: [item_categories_bool_exp!]
+  _not: item_categories_bool_exp
+  _or: [item_categories_bool_exp!]
+  category: categories_bool_exp
+  category_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  item: items_bool_exp
+  item_id: uuid_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "item_categories"
+"""
+enum item_categories_constraint {
+  """unique or primary key constraint"""
+  item_categories_pkey
+}
+
+"""
+input type for inserting data into table "item_categories"
+"""
+input item_categories_insert_input {
+  category: categories_obj_rel_insert_input
+  category_id: uuid
+  created_at: timestamptz
+  id: uuid
+  item: items_obj_rel_insert_input
+  item_id: uuid
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type item_categories_max_fields {
+  category_id: uuid
+  created_at: timestamptz
+  id: uuid
+  item_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "item_categories"
+"""
+input item_categories_max_order_by {
+  category_id: order_by
+  created_at: order_by
+  id: order_by
+  item_id: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type item_categories_min_fields {
+  category_id: uuid
+  created_at: timestamptz
+  id: uuid
+  item_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "item_categories"
+"""
+input item_categories_min_order_by {
+  category_id: order_by
+  created_at: order_by
+  id: order_by
+  item_id: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "item_categories"
+"""
+type item_categories_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [item_categories!]!
+}
+
+"""
+on conflict condition type for table "item_categories"
+"""
+input item_categories_on_conflict {
+  constraint: item_categories_constraint!
+  update_columns: [item_categories_update_column!]! = []
+  where: item_categories_bool_exp
+}
+
+"""Ordering options when selecting data from "item_categories"."""
+input item_categories_order_by {
+  category: categories_order_by
+  category_id: order_by
+  created_at: order_by
+  id: order_by
+  item: items_order_by
+  item_id: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: item_categories"""
+input item_categories_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "item_categories"
+"""
+enum item_categories_select_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  item_id
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "item_categories"
+"""
+input item_categories_set_input {
+  category_id: uuid
+  created_at: timestamptz
+  id: uuid
+  item_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "item_categories"
+"""
+enum item_categories_update_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  item_id
+
+  """column name"""
+  updated_at
+}
+
+"""
 columns and relationships of "items"
 """
 type items {
@@ -90,6 +574,42 @@ type items {
   detail: String
   id: uuid!
   image_url: String
+
+  """An array relationship"""
+  item_categories(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): [item_categories!]!
+
+  """An aggregate relationship"""
+  item_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): item_categories_aggregate!
   name: String!
   price: Int
 
@@ -177,6 +697,7 @@ input items_bool_exp {
   detail: String_comparison_exp
   id: uuid_comparison_exp
   image_url: String_comparison_exp
+  item_categories: item_categories_bool_exp
   name: String_comparison_exp
   price: Int_comparison_exp
   shop: shops_bool_exp
@@ -209,6 +730,7 @@ input items_insert_input {
   detail: String
   id: uuid
   image_url: String
+  item_categories: item_categories_arr_rel_insert_input
   name: String
   price: Int
   shop: shops_obj_rel_insert_input
@@ -284,6 +806,16 @@ type items_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "items"
+"""
+input items_obj_rel_insert_input {
+  data: items_insert_input!
+
+  """on conflict condition"""
+  on_conflict: items_on_conflict
+}
+
+"""
 on conflict condition type for table "items"
 """
 input items_on_conflict {
@@ -299,6 +831,7 @@ input items_order_by {
   detail: order_by
   id: order_by
   image_url: order_by
+  item_categories_aggregate: item_categories_aggregate_order_by
   name: order_by
   price: order_by
   shop: shops_order_by
@@ -491,6 +1024,32 @@ input items_variance_order_by {
 """mutation root"""
 type mutation_root {
   """
+  delete data from the table: "categories"
+  """
+  delete_categories(
+    """filter the rows which have to be deleted"""
+    where: categories_bool_exp!
+  ): categories_mutation_response
+
+  """
+  delete single row from the table: "categories"
+  """
+  delete_categories_by_pk(id: uuid!): categories
+
+  """
+  delete data from the table: "item_categories"
+  """
+  delete_item_categories(
+    """filter the rows which have to be deleted"""
+    where: item_categories_bool_exp!
+  ): item_categories_mutation_response
+
+  """
+  delete single row from the table: "item_categories"
+  """
+  delete_item_categories_by_pk(id: uuid!): item_categories
+
+  """
   delete data from the table: "items"
   """
   delete_items(
@@ -515,6 +1074,50 @@ type mutation_root {
   delete single row from the table: "shops"
   """
   delete_shops_by_pk(id: uuid!): shops
+
+  """
+  insert data into the table: "categories"
+  """
+  insert_categories(
+    """the rows to be inserted"""
+    objects: [categories_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: categories_on_conflict
+  ): categories_mutation_response
+
+  """
+  insert a single row into the table: "categories"
+  """
+  insert_categories_one(
+    """the row to be inserted"""
+    object: categories_insert_input!
+
+    """on conflict condition"""
+    on_conflict: categories_on_conflict
+  ): categories
+
+  """
+  insert data into the table: "item_categories"
+  """
+  insert_item_categories(
+    """the rows to be inserted"""
+    objects: [item_categories_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: item_categories_on_conflict
+  ): item_categories_mutation_response
+
+  """
+  insert a single row into the table: "item_categories"
+  """
+  insert_item_categories_one(
+    """the row to be inserted"""
+    object: item_categories_insert_input!
+
+    """on conflict condition"""
+    on_conflict: item_categories_on_conflict
+  ): item_categories
 
   """
   insert data into the table: "items"
@@ -559,6 +1162,52 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: shops_on_conflict
   ): shops
+
+  """
+  update data of the table: "categories"
+  """
+  update_categories(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: categories_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: categories_set_input
+
+    """filter the rows which have to be updated"""
+    where: categories_bool_exp!
+  ): categories_mutation_response
+
+  """
+  update single row of the table: "categories"
+  """
+  update_categories_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: categories_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: categories_set_input
+    pk_columns: categories_pk_columns_input!
+  ): categories
+
+  """
+  update data of the table: "item_categories"
+  """
+  update_item_categories(
+    """sets the columns of the filtered rows to the given values"""
+    _set: item_categories_set_input
+
+    """filter the rows which have to be updated"""
+    where: item_categories_bool_exp!
+  ): item_categories_mutation_response
+
+  """
+  update single row of the table: "item_categories"
+  """
+  update_item_categories_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: item_categories_set_input
+    pk_columns: item_categories_pk_columns_input!
+  ): item_categories
 
   """
   update data of the table: "items"
@@ -630,8 +1279,88 @@ enum order_by {
 
 type query_root {
   """
-  fetch data from the table: "items"
+  fetch data from the table: "categories"
   """
+  categories(
+    """distinct select on columns"""
+    distinct_on: [categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [categories_order_by!]
+
+    """filter the rows returned"""
+    where: categories_bool_exp
+  ): [categories!]!
+
+  """
+  fetch aggregated fields from the table: "categories"
+  """
+  categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [categories_order_by!]
+
+    """filter the rows returned"""
+    where: categories_bool_exp
+  ): categories_aggregate!
+
+  """fetch data from the table: "categories" using primary key columns"""
+  categories_by_pk(id: uuid!): categories
+
+  """An array relationship"""
+  item_categories(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): [item_categories!]!
+
+  """An aggregate relationship"""
+  item_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): item_categories_aggregate!
+
+  """fetch data from the table: "item_categories" using primary key columns"""
+  item_categories_by_pk(id: uuid!): item_categories
+
+  """An array relationship"""
   items(
     """distinct select on columns"""
     distinct_on: [items_select_column!]
@@ -721,9 +1450,7 @@ type shops {
   created_at: timestamptz!
   id: uuid!
 
-  """
-  fetch data from the table: "items"
-  """
+  """An array relationship"""
   items(
     """distinct select on columns"""
     distinct_on: [items_select_column!]
@@ -918,8 +1645,88 @@ enum shops_update_column {
 
 type subscription_root {
   """
-  fetch data from the table: "items"
+  fetch data from the table: "categories"
   """
+  categories(
+    """distinct select on columns"""
+    distinct_on: [categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [categories_order_by!]
+
+    """filter the rows returned"""
+    where: categories_bool_exp
+  ): [categories!]!
+
+  """
+  fetch aggregated fields from the table: "categories"
+  """
+  categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [categories_order_by!]
+
+    """filter the rows returned"""
+    where: categories_bool_exp
+  ): categories_aggregate!
+
+  """fetch data from the table: "categories" using primary key columns"""
+  categories_by_pk(id: uuid!): categories
+
+  """An array relationship"""
+  item_categories(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): [item_categories!]!
+
+  """An aggregate relationship"""
+  item_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [item_categories_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [item_categories_order_by!]
+
+    """filter the rows returned"""
+    where: item_categories_bool_exp
+  ): item_categories_aggregate!
+
+  """fetch data from the table: "item_categories" using primary key columns"""
+  item_categories_by_pk(id: uuid!): item_categories
+
+  """An array relationship"""
   items(
     """distinct select on columns"""
     distinct_on: [items_select_column!]

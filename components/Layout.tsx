@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useCartItemState } from '../modules/recoil-state/useCartItemState'
+import { LOCAL_STRAGE_KEY } from '../modules/data/localStrageKey'
 
 export const Layout: React.FC = ({ children }) => {
-  const { cartItem, addItem, removeItem } = useCartItemState()
+  const { cartItemState, setCartItemState } = useCartItemState()
+  useEffect(() => {
+    const cartItemsJSON = localStorage.getItem(LOCAL_STRAGE_KEY)
+    const cartItems = JSON.parse(cartItemsJSON)
+    setCartItemState(cartItems)
+  }, [])
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen text-gray-600 text-sm font-mono">
@@ -21,34 +27,33 @@ export const Layout: React.FC = ({ children }) => {
                   Home
                 </a>
               </Link>
-              <Link href="/">
+              <Link href="/item/">
                 <a className="text-indigo-900 hover:bg-indigo-500 px-3 py-2 rounded">
                   Items
                 </a>
               </Link>
-              <Link href="/">
-                <a className="text-indigo-900 hover:bg-indigo-500 px-3 py-2 rounded">
-                  Shops
+              <Link href={'/cart'}>
+                <a>
+                  <span className="relative inline-block mr-0">
+                    <Image
+                      className="w-full"
+                      width={30}
+                      height={30}
+                      src="/images/cart_icon.png"
+                      alt="Sunset in the mountains"
+                    />
+                    {cartItemState.length !== 0 ? (
+                      <div className="absolute bottom-px right-0 rounded-full h-5 w-5 flex items-center justify-center bg-red-500">
+                        <span className="font-semibold text-xs text-white">
+                          {cartItemState.length}
+                        </span>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </span>
                 </a>
               </Link>
-              <span className="relative inline-block mr-0">
-                <Image
-                  className="w-full"
-                  width={30}
-                  height={30}
-                  src="/images/cart_icon.png"
-                  alt="Sunset in the mountains"
-                />
-                {cartItem.length !== 0 ? (
-                  <div className="absolute bottom-px right-0 rounded-full h-5 w-5 flex items-center justify-center bg-red-500">
-                    <span className="font-semibold text-xs text-white">
-                      {cartItem.length}
-                    </span>
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </span>
             </div>
           </div>
         </nav>

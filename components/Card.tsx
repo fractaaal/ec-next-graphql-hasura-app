@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { categories } from '../modules/data/categories'
 import { useCartItemState } from '../modules/recoil-state/useCartItemState'
+import { LOCAL_STRAGE_KEY } from '../modules/data/localStrageKey'
 
 export type CardProps = {
   item: {
@@ -17,22 +18,31 @@ export type CardProps = {
       name: string
     }
   }
+  itemCategories: Array<{
+    category: {
+      name: string
+      index: number
+    }
+  }>
 }
 
-export const Card: React.FC<CardProps> = ({ item }) => {
-  const { cartItem, addItem, removeItem } = useCartItemState()
-  const itemId = item.id
-
+export const Card: React.FC<CardProps> = ({ item, itemCategories }) => {
+  const { cartItemState, addItem, removeItem } = useCartItemState()
+  const itemObject = item
+  const itemObjectId = itemObject.id
   const check = () => {
-    const appState = localStorage.getItem('cartItems')
-    console.log(JSON.parse(appState))
-    const ids = cartItem.map((item) => {
+    const cartItemsJSON = localStorage.getItem(LOCAL_STRAGE_KEY)
+    const cartItems = JSON.parse(cartItemsJSON)
+    const ids = cartItems.map((item) => {
       return item.id
     })
-    const flag = ids.includes(itemId)
-    return flag ? removeItem(item) : addItem(item)
+    const flag = ids.includes(itemObjectId)
+    if (flag) {
+      removeItem(itemObject)
+    } else {
+      addItem(itemObject)
+    }
   }
-  console.log(cartItem)
 
   return (
     <div className="max-w-xs w-72 rounded overflow-hidden shadow-lg mx-2 my-2">
@@ -53,9 +63,16 @@ export const Card: React.FC<CardProps> = ({ item }) => {
       </div>
       <div className="px-6 pt-4 pb-2">
         <ul className="flex">
-          <li className="inline-flex items-center bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-            #{categories[item.category]}
-          </li>
+          {itemCategories?.map((itemCategory, index) => {
+            return (
+              <div
+                key={index}
+                className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+              >
+                <p>#{itemCategory.category.name}</p>
+              </div>
+            )
+          })}
           <li className="">
             <button
               className="inline-flex items-center px-3 py-1 bg-gray-800 hover:bg-gray-500 text-white font-bold rounded"

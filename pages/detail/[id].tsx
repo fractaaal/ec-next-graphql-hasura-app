@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { GetServerSideProps } from 'next'
 import { sdk } from '../../modules/graphql-client/client'
@@ -6,6 +6,8 @@ import { CardProps } from '../../components/Card'
 import { Layout } from '../../components/Layout'
 import { categories } from '../../modules/data/categories'
 import Link from 'next/link'
+import { useCartItemState } from '../../modules/recoil-state/useCartItemState'
+import { LOCAL_STRAGE_KEY } from '../../modules/data/localStrageKey'
 
 export type ItemProps = {
   item: {
@@ -20,10 +22,37 @@ export type ItemProps = {
       name: string
     }
   }
+  categoryNames: Array<{
+    category: {
+      name: string
+      index: number
+    }
+  }>
 }
 
-const ItemDetail: React.FC<ItemProps> = ({ item }) => {
-  console.log(item.detail)
+const ItemDetail: React.FC<ItemProps> = ({ item, categoryNames }) => {
+  const { cartItemState, addItem, removeItem } = useCartItemState()
+  useEffect(() => {
+    const appState = localStorage.getItem(LOCAL_STRAGE_KEY)
+    const initialState = appState ? JSON.parse(appState) : []
+    localStorage.setItem(LOCAL_STRAGE_KEY, JSON.stringify(initialState))
+  }, [])
+
+  const itemObject = item
+  const itemObjectId = itemObject.id
+  const check = () => {
+    const cartItemsJSON = localStorage.getItem(LOCAL_STRAGE_KEY)
+    const cartItems = JSON.parse(cartItemsJSON)
+    const ids = cartItems.map((item) => {
+      return item.id
+    })
+    const flag = ids.includes(itemObjectId)
+    if (flag) {
+      removeItem(itemObject)
+    } else {
+      addItem(itemObject)
+    }
+  }
   return (
     <Layout>
       <div className="bg-white py-6 sm:py-8 lg:py-12">
@@ -60,11 +89,23 @@ const ItemDetail: React.FC<ItemProps> = ({ item }) => {
               </p>
 
               <ul>
-                <li className="inline-flex items-center bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #{categories[item.category]}
+                <li className="inline-flex items-center">
+                  {categoryNames.map((categoryName, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                      >
+                        <p>#{categoryName.category.name}</p>
+                      </div>
+                    )
+                  })}
                 </li>
                 <li className="mt-5">
-                  <button className="inline-flex items-center px-3 py-1 bg-gray-800 hover:bg-gray-500 text-white font-bold rounded">
+                  <button
+                    className="inline-flex items-center px-3 py-1 bg-gray-800 hover:bg-gray-500 text-white font-bold rounded"
+                    onClick={() => check()}
+                  >
                     <span className="inline-block mr-0">
                       <Image
                         className="w-full"
@@ -100,8 +141,9 @@ export default ItemDetail
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const itemId = context.query.id
   const { items_by_pk: item } = await sdk.pickItem({ itemId })
-  //console.log(item)
+  const categoryNames = item.item_categories
+  console.log(categoryNames)
   return {
-    props: { item },
+    props: { item, categoryNames },
   }
 }
