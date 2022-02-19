@@ -1,0 +1,19 @@
+query orderCategoryItems($offset: Int!, $limit: Int!, $category: String!) {
+  items(
+    offset: $offset
+    limit: $limit
+    where: { item_categories: { category: { name: { _eq: $category } } } }
+  ) {
+    id
+    image_url
+    detail
+    created_at
+    category
+    name
+    price
+    shop {
+      id
+      name
+    }
+  }
+}

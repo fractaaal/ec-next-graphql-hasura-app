@@ -11,5 +11,11 @@ query pickItem($itemId: uuid!) {
       id
       name
     }
+    item_categories {
+      category {
+        name
+        index
+      }
+    }
   }
 }

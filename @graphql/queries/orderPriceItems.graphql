@@ -1,5 +1,5 @@
-query allItems {
-  items {
+query orderPriceItems($offset: Int!, $limit: Int!) {
+  items(offset: $offset, limit: $limit, order_by: { price: asc }) {
     id
     image_url
     detail
